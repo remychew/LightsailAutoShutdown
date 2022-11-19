@@ -18,11 +18,12 @@ def writeHtml(id, region, js):
     tz=pytz.timezone('Asia/Shanghai')
     time_str = datetime.datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
     time_ts=datetime.datetime.now().timestamp()
-    styleA='style="background-color:rgb(214, 58, 58)"'
-    f.write('<p><span> ID= '+js['id']+' ----- Region= '+js['region']+' ----- UpdateTime= '+time_str+'</span><span style="color:red;" id="%s"></span></p>'%(id+region))
-    f.write('<script language="javascript">function %s() {document.getElementById("%s").innerHTML = "    距上次更新："+Math.round(new Date().getTime()/1000-%d)+"秒  若过大请检查是否有后台监控掉线";}setInterval(%s,1000);</script>'
+    styleA='style="background-color:rgb(214, 58, 58);text-align:center;"'
+    f.write('<head><meta http-equiv="refresh" content="30"></head>')   
+    f.write('<p style="margin: auto;padding-top:20px;width: 50%;text-align: center;"><span>实例区域： '+js['region']+' </br> 最后更新时间： '+time_str+'</span><span style="color:red;" id="%s"></span></p></br>'%(id+region))
+    f.write('<script language="javascript">function %s() {document.getElementById("%s").innerHTML = "    距上次更新："+Math.round(new Date().getTime()/1000-%d)+"秒";}setInterval(%s,1000);</script>'
             %(id+region.replace('-','_'),id+region,time_ts,id+region.replace('-','_')))
-    f.write('''<table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
+    f.write('''<table style="border: 1px solid;border-radius: 4px;border-collapse: collapse;border-style:hidden;box-shadow: 0 0 0 1px #d8d8d8;text-align: center;margin:auto" cellpadding="10" border='1'>
                <tr><td>实例状态</td><td>实例名</td><td>IP地址</td>
                <td>创建时间</td><td>流量限制</td><td>已用流量</td>
                </tr>''')
@@ -31,7 +32,7 @@ def writeHtml(id, region, js):
         dt = pytz.datetime.datetime.fromtimestamp(ts, tz)
         f.write('<tr><td %s>%s</td><td>%s</td><td>%s</td> \
                <td>%s</td><td>%s</td><td>%s</td> \
-               </tr>'%(styleA if instance['state']!='running'else'', instance['state'],instance['name'],instance['ipv4']
+               </tr>'%(styleA if instance['state']!='running'else'',instance['state'],instance['name'],instance['ipv4']
                ,dt.strftime('%Y-%m-%d %H:%M:%S'),instance['totalTraffic'],instance['usedTraffic'] if 'usedTraffic' in instance else 'None'))
     f.write('</table><p></p><p></p>')           
     f.close()
