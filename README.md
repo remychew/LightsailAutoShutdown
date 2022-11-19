@@ -30,3 +30,11 @@ optional arguments:
 
 ![image](https://user-images.githubusercontent.com/84311024/141241136-5b6cf63c-1800-4702-900b-64aa78116f79.png)
 
+- 开机启动
+- 编辑 /etc/rc.local 文件
+```shell
+#!/bin/bash -e
+cd /home/admin/ && python3 transCheck.py AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION
+exit 0
+```
+---
